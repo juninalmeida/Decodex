@@ -1,0 +1,25 @@
+.app {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  background-color: var(--color-background);
+  color: var(--color-on-surface);
+
+  font-family: var(--font-body);
+}
+
+h1 {
+  font-family: var(--font-headline);
+  color: var(--color-primary);
+  font-size: 3rem;
+  font-weight: 700;
+}
+
+p {
+  color: var(--color-secondary);
+  letter-spacing: 0.3rem;
+  font-size: 0.875rem;
+}
