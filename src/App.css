@@ -3,6 +3,17 @@ body {
   color: var(--color-on-surface);
 }
 
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.03;
+  background-image: radial-gradient(#ff4500 0.5px, transparent 0.5px);
+  background-size: 24px 24px;
+}
+
 ::selection {
   background-color: var(--color-primary);
   color: var(--color-background);

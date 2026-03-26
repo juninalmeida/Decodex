@@ -6,8 +6,16 @@
 
 .game-status__playing {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: calc(var(--spacing-base) * 4);
+  gap: calc(var(--spacing-base) * 2);
+}
+
+@media (min-width: 640px) {
+  .game-status__playing {
+    flex-direction: row;
+    gap: calc(var(--spacing-base) * 4);
+  }
 }
 
 .game-status__attempts {
@@ -152,14 +160,20 @@
 }
 
 .game-status__divider {
-  width: 1px;
-  height: 1.5rem;
+  width: 3rem;
+  height: 1px;
   background-color: var(--color-outline-variant);
   opacity: 0.3;
+}
+
+@media (min-width: 640px) {
+  .game-status__divider {
+    width: 1px;
+    height: 1.5rem;
+  }
 }
 
 .game-status__box--decoded {
   background-color: var(--color-secondary);
   box-shadow: 0 0 6px rgba(253, 139, 0, 0.3);
 }
-

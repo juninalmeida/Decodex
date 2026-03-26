@@ -1,0 +1,99 @@
+.side-panel {
+  position: absolute;
+  top: calc(var(--spacing-base) * 4);
+  left: calc(var(--spacing-base) * 4);
+  display: none;
+  flex-direction: column;
+  gap: calc(var(--spacing-base) * 3);
+  width: 16rem;
+}
+
+@media (min-width: 1200px) {
+  .side-panel {
+    display: flex;
+  }
+}
+
+.side-panel__header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-base);
+}
+
+.side-panel__title {
+  font-family: var(--font-headline);
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+
+.side-panel__line {
+  height: 1px;
+  width: 100%;
+  background-color: var(--color-outline-variant);
+  opacity: 0.2;
+}
+
+.side-panel__stats {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacing-base) * 2);
+}
+
+.side-panel__stat {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.side-panel__label {
+  font-family: var(--font-body);
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--color-on-surface-variant);
+}
+
+.side-panel__value {
+  font-family: var(--font-headline);
+  font-size: 1.1rem;
+  letter-spacing: -0.03em;
+}
+
+.side-panel__value--primary {
+  color: var(--color-primary);
+}
+
+.side-panel__value--secondary {
+  color: var(--color-secondary);
+}
+
+.side-panel__bar {
+  height: 0.25rem;
+  width: 100%;
+  background-color: var(--color-surface-high);
+  overflow: hidden;
+}
+
+.side-panel__bar-fill {
+  height: 100%;
+  background-color: var(--color-primary);
+  box-shadow: 0 0 10px var(--color-primary);
+  transition: width 0.5s;
+}
+
+.side-panel__boxes {
+  display: flex;
+  gap: calc(var(--spacing-base) * 0.5);
+}
+
+.side-panel__box {
+  width: 0.75rem;
+  height: 0.75rem;
+  background-color: rgba(73, 72, 71, 0.3);
+}
+
+.side-panel__box--active {
+  background-color: var(--color-primary);
+}

@@ -11,6 +11,19 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: calc(var(--spacing-base) * 6);
-  padding: calc(var(--spacing-base) * 6) calc(var(--spacing-base) * 2);
+  gap: calc(var(--spacing-base) * 3);
+  padding: calc(var(--spacing-base) * 3) calc(var(--spacing-base) * 1);
+  position: relative;
+  background: radial-gradient(
+    circle at bottom,
+    rgba(255, 69, 0, 0.15) 0%,
+    rgba(14, 14, 14, 0) 70%
+  );
+}
+
+@media (min-width: 768px) {
+  .terminal__content {
+    gap: calc(var(--spacing-base) * 6);
+    padding: calc(var(--spacing-base) * 6) calc(var(--spacing-base) * 2);
+  }
 }
