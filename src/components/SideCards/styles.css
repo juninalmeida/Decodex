@@ -67,6 +67,17 @@
   letter-spacing: -0.03em;
 }
 
+.side-cards__best {
+  font-family: var(--font-body);
+  font-size: 0.5rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--color-on-surface-variant);
+  opacity: 0.5;
+  margin-top: calc(var(--spacing-base) * 0.25);
+}
+
 .side-cards__action {
   font-family: var(--font-headline);
   font-size: 0.65rem;

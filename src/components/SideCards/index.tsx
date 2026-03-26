@@ -1,14 +1,16 @@
 import './styles.css'
 
 type SideCardsProps = {
-  wordsDecoded: number
+  streak: number
+  bestStreak: number
   showHint: boolean
   hint: string
   onShowHint: () => void
 }
 
 function SideCards({
-  wordsDecoded,
+  streak,
+  bestStreak,
   showHint,
   hint,
   onShowHint,
@@ -20,7 +22,10 @@ function SideCards({
         <div className="side-cards__info">
           <span className="side-cards__label">Encryption Streak</span>
           <span className="side-cards__value">
-            {String(wordsDecoded).padStart(2, '0')}
+            {String(streak).padStart(2, '0')}
+          </span>
+          <span className="side-cards__best">
+            BEST: {String(bestStreak).padStart(2, '0')}
           </span>
         </div>
       </div>

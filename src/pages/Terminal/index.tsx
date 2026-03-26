@@ -21,6 +21,8 @@ function Terminal() {
     wordsDecoded,
     wordsToWin,
     isShaking,
+    streak,
+    bestStreak,
     handleKeyPress,
     handleBackspace,
     handleEnter,
@@ -57,7 +59,8 @@ function Terminal() {
           onEnter={handleEnter}
         />
         <SideCards
-          wordsDecoded={wordsDecoded}
+          streak={streak}
+          bestStreak={bestStreak}
           showHint={showHint}
           hint={hint}
           onShowHint={handleShowHint}

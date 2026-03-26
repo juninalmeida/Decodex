@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import type { LetterData, KeyStatus, GameStatus } from '../types/game'
 import { getRandomWord } from '../data/words'
+import useLocalStorage from './useLocalStorage'
 
 const WORD_LENGTH = 6
 const MAX_ATTEMPTS = 3
@@ -17,6 +18,8 @@ function useGame() {
   const [wordsDecoded, setWordsDecoded] = useState(0)
   const [usedWords, setUsedWords] = useState<string[]>([])
   const [isShaking, setIsShaking] = useState(false)
+  const [streak, setStreak] = useLocalStorage<number>('decodex-streak', 0)
+  const [bestStreak, setBestStreak] = useLocalStorage<number>('decodex-best-streak', 0)
 
   function createEmptyGuesses(): LetterData[] {
     return Array.from({ length: WORD_LENGTH }, (_, index) => ({
@@ -131,6 +134,11 @@ function useGame() {
         setUsedWords(newUsed)
 
         if (newDecoded >= WORDS_TO_WIN) {
+          const newStreak = streak + 1
+          setStreak(newStreak)
+          if (newStreak > bestStreak) {
+            setBestStreak(newStreak)
+          }
           setGameStatus('won')
           return
         }
@@ -151,6 +159,7 @@ function useGame() {
       setAttempts(newAttempts)
 
       if (newAttempts <= 0) {
+        setStreak(0)
         setGameStatus('lost')
         return
       }
@@ -216,6 +225,8 @@ function useGame() {
     wordsDecoded,
     wordsToWin: WORDS_TO_WIN,
     isShaking,
+    streak,
+    bestStreak,
     handleKeyPress,
     handleBackspace,
     handleEnter,
