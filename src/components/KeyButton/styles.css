@@ -1,0 +1,56 @@
+.key-button {
+  flex: 1;
+  max-width: 3rem;
+  height: clamp(2.8rem, 5vw, 3.5rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(38, 38, 38, 0.4);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--color-outline-variant);
+  color: var(--color-on-surface);
+  font-family: var(--font-headline);
+  font-weight: 700;
+  font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.key-button:hover {
+  background-color: var(--color-surface-high);
+  transform: scale(1.05);
+}
+
+.key-button:active {
+  transform: scale(0.95);
+}
+
+.key-button--wide {
+  max-width: 4.5rem;
+  flex: 1.5;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: clamp(0.6rem, 1vw, 0.75rem);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.key-button--correct {
+  background: rgba(255, 143, 112, 0.2);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  box-shadow: 0 0 15px rgba(255, 143, 112, 0.15);
+}
+
+.key-button--wrong {
+  background: rgba(38, 38, 38, 0.5);
+  color: rgba(255, 255, 255, 0.4);
+  cursor: not-allowed;
+}
+
+.key-button--misplaced {
+  background: rgba(253, 139, 0, 0.2);
+  border-color: var(--color-secondary);
+  color: var(--color-secondary);
+  box-shadow: 0 0 15px rgba(253, 139, 0, 0.15);
+}

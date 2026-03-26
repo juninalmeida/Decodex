@@ -1,0 +1,95 @@
+.letter-slot {
+  width: clamp(3rem, 6vw, 5rem);
+  height: clamp(4.5rem, 9vw, 7rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  background: rgba(38, 38, 38, 0.4);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--color-outline-variant);
+}
+
+.letter-slot span {
+  font-family: var(--font-headline);
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-weight: 700;
+  color: var(--color-on-surface);
+}
+
+.letter-slot__bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: var(--color-outline-variant);
+}
+
+.letter-slot--correct {
+  border-color: rgba(255, 143, 112, 0.4);
+  box-shadow: 0 0 20px rgba(255, 143, 112, 0.2);
+}
+
+.letter-slot--correct span {
+  color: var(--color-primary);
+}
+
+.letter-slot--correct .letter-slot__bar {
+  height: 2px;
+  background-color: var(--color-primary);
+  box-shadow: 0 0 10px var(--color-primary);
+}
+
+.letter-slot--wrong {
+  border-color: rgba(255, 113, 108, 0.3);
+  opacity: 0.5;
+}
+
+.letter-slot--wrong span {
+  color: var(--color-error);
+}
+
+.letter-slot--misplaced {
+  border-color: rgba(253, 139, 0, 0.4);
+}
+
+.letter-slot--misplaced span {
+  color: var(--color-secondary);
+}
+
+.letter-slot--misplaced .letter-slot__bar {
+  height: 2px;
+  background-color: var(--color-secondary);
+}
+
+.letter-slot--active {
+  border-color: var(--color-outline-variant);
+}
+
+.letter-slot--active span {
+  display: block;
+  width: 2px;
+  height: 2.5rem;
+  background-color: rgba(173, 170, 170, 0.2);
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+.letter-slot--empty {
+  border-color: rgba(73, 72, 71, 0.3);
+}
+
+.letter-slot--empty .letter-slot__bar {
+  background-color: rgba(73, 72, 71, 0.3);
+}

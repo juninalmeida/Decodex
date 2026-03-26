@@ -1,0 +1,10 @@
+type LetterStatus = 'empty' | 'active' | 'correct' | 'wrong' | 'misplaced'
+
+type LetterData = {
+  letter: string
+  status: LetterStatus
+}
+
+type KeyStatus = 'default' | 'correct' | 'wrong' | 'misplaced'
+
+export type { LetterStatus, LetterData, KeyStatus }
