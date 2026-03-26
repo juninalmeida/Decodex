@@ -86,6 +86,10 @@
   }
 }
 
+.letter-slot--filled span {
+  animation: pulse 1s infinite;
+}
+
 .letter-slot--empty {
   border-color: rgba(73, 72, 71, 0.3);
 }

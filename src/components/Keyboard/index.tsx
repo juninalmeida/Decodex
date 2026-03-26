@@ -1,5 +1,13 @@
+import type { KeyStatus } from '../../types/game'
 import KeyButton from '../KeyButton'
 import './styles.css'
+
+type KeyboardProps = {
+  keyStatuses: Record<string, KeyStatus>
+  onKeyPress: (key: string) => void
+  onBackspace: () => void
+  onEnter: () => void
+}
 
 const ROWS = [
   ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
@@ -7,7 +15,18 @@ const ROWS = [
   ['ENTER', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', '⌫'],
 ]
 
-function Keyboard() {
+function Keyboard({
+  keyStatuses,
+  onKeyPress,
+  onBackspace,
+  onEnter,
+}: KeyboardProps) {
+  function handleClick(key: string) {
+    if (key === 'ENTER') return onEnter()
+    if (key === '⌫') return onBackspace()
+    return onKeyPress(key)
+  }
+
   return (
     <div className="keyboard">
       {ROWS.map((row, rowIndex) => (
@@ -16,9 +35,9 @@ function Keyboard() {
             <KeyButton
               key={key}
               label={key}
-              status="default"
+              status={keyStatuses[key] || 'default'}
               isWide={key === 'ENTER' || key === '⌫'}
-              onClick={() => console.log(key)}
+              onClick={() => handleClick(key)}
             />
           ))}
         </div>

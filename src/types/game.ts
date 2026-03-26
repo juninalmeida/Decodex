@@ -1,4 +1,10 @@
-type LetterStatus = 'empty' | 'active' | 'correct' | 'wrong' | 'misplaced'
+type LetterStatus =
+  | 'empty'
+  | 'active'
+  | 'filled'
+  | 'correct'
+  | 'wrong'
+  | 'misplaced'
 
 type LetterData = {
   letter: string
