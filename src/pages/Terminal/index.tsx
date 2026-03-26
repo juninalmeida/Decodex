@@ -20,6 +20,7 @@ function Terminal() {
     secretWord,
     wordsDecoded,
     wordsToWin,
+    isShaking,
     handleKeyPress,
     handleBackspace,
     handleEnter,
@@ -36,7 +37,7 @@ function Terminal() {
           maxAttempts={3}
           wordsDecoded={wordsDecoded}
         />
-        <WordDisplay guesses={guesses} />
+        <WordDisplay guesses={guesses} isShaking={isShaking} />
         <GameStatus
           gameStatus={gameStatus}
           attempts={attempts}

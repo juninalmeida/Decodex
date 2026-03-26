@@ -16,6 +16,7 @@ function useGame() {
   const [showHint, setShowHint] = useState(false)
   const [wordsDecoded, setWordsDecoded] = useState(0)
   const [usedWords, setUsedWords] = useState<string[]>([])
+  const [isShaking, setIsShaking] = useState(false)
 
   function createEmptyGuesses(): LetterData[] {
     return Array.from({ length: WORD_LENGTH }, (_, index) => ({
@@ -80,67 +81,88 @@ function useGame() {
     if (gameStatus !== 'playing') return
     if (currentIndex < WORD_LENGTH) return
 
-    const newGuesses = [...guesses]
-    const newKeyStatuses = { ...keyStatuses }
+    const revealDelay = 200
+    const totalRevealTime = WORD_LENGTH * revealDelay
+
+    const results: Array<{ status: 'correct' | 'wrong' | 'misplaced'; letter: string }> = []
     let allCorrect = true
 
-    newGuesses.forEach((slot, index) => {
+    guesses.forEach((slot, index) => {
       const correctLetter = wordData.word[index]
 
       if (slot.letter === correctLetter) {
-        newGuesses[index] = { ...slot, status: 'correct' }
-        newKeyStatuses[slot.letter] = 'correct'
+        results.push({ status: 'correct', letter: slot.letter })
       } else if (wordData.word.includes(slot.letter)) {
-        newGuesses[index] = { ...slot, status: 'misplaced' }
-        if (newKeyStatuses[slot.letter] !== 'correct') {
-          newKeyStatuses[slot.letter] = 'misplaced'
-        }
+        results.push({ status: 'misplaced', letter: slot.letter })
         allCorrect = false
       } else {
-        newGuesses[index] = { ...slot, status: 'wrong' }
-        newKeyStatuses[slot.letter] = 'wrong'
+        results.push({ status: 'wrong', letter: slot.letter })
         allCorrect = false
       }
     })
 
-    setGuesses(newGuesses)
-    setKeyStatuses(newKeyStatuses)
+    results.forEach((result, index) => {
+      setTimeout(() => {
+        setGuesses((prev) => {
+          const updated = [...prev]
+          updated[index] = { letter: result.letter, status: result.status }
+          return updated
+        })
 
-    if (allCorrect) {
-      const newDecoded = wordsDecoded + 1
-      const newUsed = [...usedWords, wordData.word]
-      setWordsDecoded(newDecoded)
-      setUsedWords(newUsed)
+        setKeyStatuses((prev) => {
+          const updated = { ...prev }
+          if (result.status === 'correct') {
+            updated[result.letter] = 'correct'
+          } else if (result.status === 'misplaced' && updated[result.letter] !== 'correct') {
+            updated[result.letter] = 'misplaced'
+          } else if (result.status === 'wrong' && !updated[result.letter]) {
+            updated[result.letter] = 'wrong'
+          }
+          return updated
+        })
+      }, index * revealDelay)
+    })
 
-      if (newDecoded >= WORDS_TO_WIN) {
-        setGameStatus('won')
+    setTimeout(() => {
+      if (allCorrect) {
+        const newDecoded = wordsDecoded + 1
+        const newUsed = [...usedWords, wordData.word]
+        setWordsDecoded(newDecoded)
+        setUsedWords(newUsed)
+
+        if (newDecoded >= WORDS_TO_WIN) {
+          setGameStatus('won')
+          return
+        }
+
+        setTimeout(() => {
+          const nextWord = getNewUniqueWord(newUsed)
+          setWordData(nextWord)
+          setGuesses(createEmptyGuesses())
+          setCurrentIndex(0)
+          setKeyStatuses({})
+          setShowHint(false)
+        }, 1000)
+
         return
       }
 
+      const newAttempts = attempts - 1
+      setAttempts(newAttempts)
+
+      if (newAttempts <= 0) {
+        setGameStatus('lost')
+        return
+      }
+
+      setIsShaking(true)
+
       setTimeout(() => {
-        const nextWord = getNewUniqueWord(newUsed)
-        setWordData(nextWord)
+        setIsShaking(false)
         setGuesses(createEmptyGuesses())
         setCurrentIndex(0)
-        setKeyStatuses({})
-        setShowHint(false)
       }, 1500)
-
-      return
-    }
-
-    const newAttempts = attempts - 1
-    setAttempts(newAttempts)
-
-    if (newAttempts <= 0) {
-      setGameStatus('lost')
-      return
-    }
-
-    setTimeout(() => {
-      setGuesses(createEmptyGuesses())
-      setCurrentIndex(0)
-    }, 1500)
+    }, totalRevealTime + 300)
   }
 
   function handleNewGame() {
@@ -193,6 +215,7 @@ function useGame() {
     secretWord: wordData.word,
     wordsDecoded,
     wordsToWin: WORDS_TO_WIN,
+    isShaking,
     handleKeyPress,
     handleBackspace,
     handleEnter,

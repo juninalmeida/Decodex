@@ -22,7 +22,15 @@
 }
 
 .key-button:active {
-  transform: scale(0.95);
+  animation: key-pop 0.15s ease-out;
+  box-shadow: 0 0 8px rgba(255, 143, 112, 0.2);
+}
+
+@keyframes key-pop {
+  0% { transform: scale(1); }
+  40% { transform: scale(0.88); }
+  70% { transform: scale(1.06); }
+  100% { transform: scale(1); }
 }
 
 .key-button--wide {
