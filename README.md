@@ -11,7 +11,7 @@ Um jogo de decodificação de palavras com estética cyberpunk, construído com 
 ![Vite](https://img.shields.io/badge/Vite-8.0-646CFF?style=for-the-badge&logo=vite&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS3-Custom_Properties-1572B6?style=for-the-badge&logo=css3&logoColor=white)
 
-[Live Demo](https://decodex-game.vercel.app) · [Reportar Bug](https://github.com/juninalmeida/decodex/issues)
+[Live Demo](https://decodex-tau.vercel.app) · [Reportar Bug](https://github.com/juninalmeida/decodex/issues)
 
 </div>
 
