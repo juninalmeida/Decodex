@@ -7,7 +7,7 @@ type GameStatusProps = {
   maxAttempts: number
   hint: string
   showHint: boolean
-  secretWord: string
+  revealedWord: string | null
   wordsDecoded: number
   wordsToWin: number
   onNewGame: () => void
@@ -20,7 +20,7 @@ function GameStatus({
   maxAttempts,
   hint,
   showHint,
-  secretWord,
+  revealedWord,
   wordsDecoded,
   wordsToWin,
   onNewGame,
@@ -88,7 +88,7 @@ function GameStatus({
           <span className="game-status__icon">✕</span>
           <h2>SINAL PERDIDO</h2>
           <p>
-            A palavra era: <strong>{secretWord}</strong>
+            A palavra era: <strong>{revealedWord}</strong>
           </p>
           <button className="game-status__new-game" onClick={onNewGame}>
             NOVA TRANSMISSÃO

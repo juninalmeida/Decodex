@@ -17,7 +17,7 @@ function Terminal() {
     attempts,
     hint,
     showHint,
-    secretWord,
+    revealedWord,
     wordsDecoded,
     wordsToWin,
     isShaking,
@@ -46,7 +46,7 @@ function Terminal() {
           maxAttempts={3}
           hint={hint}
           showHint={showHint}
-          secretWord={secretWord}
+          revealedWord={revealedWord}
           wordsDecoded={wordsDecoded}
           wordsToWin={wordsToWin}
           onNewGame={handleNewGame}

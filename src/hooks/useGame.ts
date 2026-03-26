@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import type { LetterData, KeyStatus, GameStatus } from '../types/game'
 import { getRandomWord } from '../data/words'
 import useLocalStorage from './useLocalStorage'
@@ -18,6 +18,7 @@ function useGame() {
   const [wordsDecoded, setWordsDecoded] = useState(0)
   const [usedWords, setUsedWords] = useState<string[]>([])
   const [isShaking, setIsShaking] = useState(false)
+  const [isRevealing, setIsRevealing] = useState(false)
   const [streak, setStreak] = useLocalStorage<number>('decodex-streak', 0)
   const [bestStreak, setBestStreak] = useLocalStorage<number>('decodex-best-streak', 0)
 
@@ -40,16 +41,10 @@ function useGame() {
 
   function handleKeyPress(key: string) {
     if (gameStatus !== 'playing') return
+    if (isRevealing) return
     if (currentIndex >= WORD_LENGTH) return
 
     const newGuesses = [...guesses]
-
-    if (currentIndex > 0) {
-      newGuesses[currentIndex - 1] = {
-        ...newGuesses[currentIndex - 1],
-        status: 'empty',
-      }
-    }
 
     newGuesses[currentIndex] = { letter: key, status: 'filled' }
 
@@ -66,6 +61,7 @@ function useGame() {
 
   function handleBackspace() {
     if (gameStatus !== 'playing') return
+    if (isRevealing) return
     if (currentIndex <= 0) return
 
     const newIndex = currentIndex - 1
@@ -82,7 +78,10 @@ function useGame() {
 
   function handleEnter() {
     if (gameStatus !== 'playing') return
+    if (isRevealing) return
     if (currentIndex < WORD_LENGTH) return
+
+    setIsRevealing(true)
 
     const revealDelay = 200
     const totalRevealTime = WORD_LENGTH * revealDelay
@@ -90,16 +89,26 @@ function useGame() {
     const results: Array<{ status: 'correct' | 'wrong' | 'misplaced'; letter: string }> = []
     let allCorrect = true
 
-    guesses.forEach((slot, index) => {
-      const correctLetter = wordData.word[index]
+    const letterCounts: Record<string, number> = {}
+    for (const char of wordData.word) {
+      letterCounts[char] = (letterCounts[char] || 0) + 1
+    }
 
-      if (slot.letter === correctLetter) {
+    guesses.forEach((slot, index) => {
+      if (slot.letter === wordData.word[index]) {
         results.push({ status: 'correct', letter: slot.letter })
-      } else if (wordData.word.includes(slot.letter)) {
-        results.push({ status: 'misplaced', letter: slot.letter })
-        allCorrect = false
+        letterCounts[slot.letter]--
       } else {
         results.push({ status: 'wrong', letter: slot.letter })
+      }
+    })
+
+    results.forEach((result, index) => {
+      if (result.status !== 'correct') {
+        if (letterCounts[result.letter] > 0) {
+          results[index] = { status: 'misplaced', letter: result.letter }
+          letterCounts[result.letter]--
+        }
         allCorrect = false
       }
     })
@@ -139,6 +148,7 @@ function useGame() {
           if (newStreak > bestStreak) {
             setBestStreak(newStreak)
           }
+          setIsRevealing(false)
           setGameStatus('won')
           return
         }
@@ -150,6 +160,7 @@ function useGame() {
           setCurrentIndex(0)
           setKeyStatuses({})
           setShowHint(false)
+          setIsRevealing(false)
         }, 1000)
 
         return
@@ -160,6 +171,7 @@ function useGame() {
 
       if (newAttempts <= 0) {
         setStreak(0)
+        setIsRevealing(false)
         setGameStatus('lost')
         return
       }
@@ -170,6 +182,7 @@ function useGame() {
         setIsShaking(false)
         setGuesses(createEmptyGuesses())
         setCurrentIndex(0)
+        setIsRevealing(false)
       }, 1500)
     }, totalRevealTime + 300)
   }
@@ -191,18 +204,22 @@ function useGame() {
     setShowHint(true)
   }
 
+  const handlersRef = useRef({ handleEnter, handleBackspace, handleKeyPress })
+
+  useEffect(() => {
+    handlersRef.current = { handleEnter, handleBackspace, handleKeyPress }
+  })
+
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
-      if (gameStatus !== 'playing') return
-
       const key = event.key.toUpperCase()
 
       if (key === 'ENTER') {
-        handleEnter()
+        handlersRef.current.handleEnter()
       } else if (key === 'BACKSPACE') {
-        handleBackspace()
+        handlersRef.current.handleBackspace()
       } else if (/^[A-Z]$/.test(key)) {
-        handleKeyPress(key)
+        handlersRef.current.handleKeyPress(key)
       }
     }
 
@@ -211,7 +228,9 @@ function useGame() {
     return () => {
       window.removeEventListener('keydown', handleKeyDown)
     }
-  })
+  }, [])
+
+  const revealedWord = gameStatus === 'lost' ? wordData.word : null
 
   return {
     guesses,
@@ -221,7 +240,7 @@ function useGame() {
     attempts,
     hint: wordData.hint,
     showHint,
-    secretWord: wordData.word,
+    revealedWord,
     wordsDecoded,
     wordsToWin: WORDS_TO_WIN,
     isShaking,
