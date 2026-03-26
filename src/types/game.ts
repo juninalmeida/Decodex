@@ -13,4 +13,6 @@ type LetterData = {
 
 type KeyStatus = 'default' | 'correct' | 'wrong' | 'misplaced'
 
-export type { LetterStatus, LetterData, KeyStatus }
+type GameStatus = 'playing' | 'won' | 'lost'
+
+export type { LetterStatus, LetterData, KeyStatus, GameStatus }
