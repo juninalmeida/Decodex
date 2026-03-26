@@ -1,0 +1,58 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-base) calc(var(--spacing-base) * 3);
+  background-color: rgba(14, 14, 14, 0.8);
+  border-bottom: 1px solid rgba(255, 69, 0, 0.2);
+  width: 100%;
+}
+
+.header__logo span {
+  font-family: var(--font-headline);
+  font-weight: 800;
+  color: var(--color-primary-container);
+  text-transform: uppercase;
+  letter-spacing: -0.05em;
+  font-size: clamp(1.2rem, 2vw, 1.5rem);
+}
+
+.header__nav {
+  display: flex;
+  gap: calc(var(--spacing-base) * 4);
+}
+
+.header__nav a {
+  color: var(--color-outline);
+  text-decoration: none;
+  font-family: var(--font-headline);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: clamp(0.7rem, 1.2vw, 0.85rem);
+  transition: color 0.3s;
+}
+
+.header__nav a:hover {
+  color: var(--color-on-surface-variant);
+}
+
+.header__nav a.active {
+  color: var(--color-primary);
+  border-bottom: 2px solid var(--color-primary-container);
+  padding-bottom: calc(var(--spacing-base) * 0.5);
+}
+
+.header__actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.header__actions button {
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: var(--spacing-base);
+}
